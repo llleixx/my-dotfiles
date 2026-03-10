@@ -50,7 +50,7 @@ zinit light Aloxaf/fzf-tab
 # =============================================================================
 
 # Initialize fzf native keybindings and completion
-eval "$(fzf --zsh)"
+source <(fzf --zsh)
 
 # Vim mode (Synchronous loading recommended to prevent missed keystrokes on startup)
 zinit ice depth"1"

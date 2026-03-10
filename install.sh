@@ -37,7 +37,6 @@ if [[ "$#" -gt 0 ]]; then
     done
 fi
 
-# If --all is passed or no arguments are provided, enable all modules
 if [ "$INSTALL_ALL" = true ]; then
     INSTALL_ZSH=true
     INSTALL_VIM=true
@@ -48,9 +47,10 @@ fi
 # Dependency Resolution
 # =============================================================================
 echo "📦 Resolving system dependencies..."
-PACKAGES=("curl")
+PACKAGES=("curl" "tar")
 
-[ "$INSTALL_ZSH" = true ] && PACKAGES+=("zsh" "fzf" "zoxide")
+# Note: fzf has been removed from apt packages to avoid outdated versions
+[ "$INSTALL_ZSH" = true ] && PACKAGES+=("zsh" "zoxide")
 [ "$INSTALL_VIM" = true ] && PACKAGES+=("vim")
 [ "$INSTALL_GIT" = true ] && PACKAGES+=("git")
 
@@ -63,6 +63,48 @@ sudo apt install -y "${PACKAGES[@]}"
 
 if [ "$INSTALL_ZSH" = true ]; then
     echo "🚀 Deploying Zsh environment..."
+
+    # --- 🌟 Install Latest fzf via Pre-compiled Release ---
+    # Remove the outdated apt version if it exists
+    if dpkg -l | grep -q "^ii  fzf"; then
+        echo "🗑️ Removing outdated apt version of fzf..."
+        sudo apt remove -y fzf
+    fi
+
+    # Determine system architecture
+    ARCH=$(uname -m)
+    case $ARCH in
+        x86_64) FZF_ARCH="amd64" ;;
+        aarch64|arm64) FZF_ARCH="arm64" ;;
+        *) echo "⚠️ Unsupported architecture for fzf auto-install: $ARCH. Skipping fzf."; FZF_ARCH="" ;;
+    esac
+
+    if [ -n "$FZF_ARCH" ]; then
+        echo "🔍 Fetching latest fzf version from GitHub..."
+        # Use GitHub API to get the latest release tag dynamically
+        FZF_VERSION=$(curl -s https://api.github.com/repos/junegunn/fzf/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+
+        # Fallback mechanism in case of API rate limit or network failure
+        if [ -z "$FZF_VERSION" ]; then
+            echo "⚠️ Failed to fetch version from API. Falling back to 0.70.0"
+            FZF_VERSION="0.70.0"
+        fi
+
+        echo "📌 Latest version resolved: v${FZF_VERSION}"
+        FZF_URL="https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_${FZF_ARCH}.tar.gz"
+
+        echo "⬇️ Downloading fzf v${FZF_VERSION} for linux_${FZF_ARCH}..."
+        curl -fsSL "$FZF_URL" -o /tmp/fzf.tar.gz
+
+        echo "📦 Extracting and installing fzf..."
+        tar -xzf /tmp/fzf.tar.gz -C /tmp
+        sudo mv /tmp/fzf /usr/local/bin/fzf
+        sudo chmod +x /usr/local/bin/fzf
+        rm /tmp/fzf.tar.gz
+        echo "✅ fzf installed successfully."
+    fi
+    # ---------------------------------------------------------
+
     curl -fsSL https://raw.githubusercontent.com/llleixx/my-dotfiles/main/.zshrc -o ~/.zshrc
     curl -fsSL https://raw.githubusercontent.com/llleixx/my-dotfiles/main/.p10k.zsh -o ~/.p10k.zsh
 
