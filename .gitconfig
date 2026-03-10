@@ -1,0 +1,56 @@
+# =============================================================================
+# 1. User Identity (Update with your information)
+# =============================================================================
+[user]
+    name = lllei
+    email = llleigoing@outlook.com
+
+# =============================================================================
+# 2. Core Settings
+# =============================================================================
+[core]
+    # Set Vim as the default editor for commit messages
+    editor = vim
+    
+    # Convert CRLF to LF on commit, do not convert on checkout 
+    # (Crucial for cross-platform consistency on Linux/macOS)
+    autocrlf = input
+    
+    # Specify a global gitignore file for system/editor specific files
+    excludesfile = ~/.gitignore_global
+
+# =============================================================================
+# 3. Modern Git Defaults
+# =============================================================================
+[init]
+    # Set the default branch name to 'main' for newly initialized repositories
+    defaultBranch = main
+
+[pull]
+    # Use rebase by default instead of merge when pulling
+    # (Maintains a clean, linear commit history without unnecessary merge commits)
+    rebase = true
+
+[fetch]
+    # Automatically prune remote-tracking branches that have been deleted on the remote
+    prune = true
+
+[color]
+    # Enable auto-coloring for terminal output
+    ui = auto
+
+# =============================================================================
+# 4. Productivity Aliases
+# =============================================================================
+[alias]
+    # 🚀 Advanced: Highly customized, colorized commit graph
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    
+    # 🚀 Advanced: Summarize commit counts by author (no merges)
+    who = shortlog -sn --no-merges
+
+    # 🚀 Advanced: Undo the last commit while keeping the working directory changes intact
+    undo = reset HEAD~1 --mixed
+
+    # 🚀 Advanced: Append current staged changes to the last commit without editing the message
+    amend = commit -a --amend --no-edit
