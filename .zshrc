@@ -65,6 +65,26 @@ zinit light zsh-users/zsh-history-substring-search
 # =============================================================================
 eval "$(zoxide init zsh)"
 
+# =============================================================================
+# 7. GNU color support and common aliases (aligned with Ubuntu .bashrc)
+# =============================================================================
+if [[ -x /usr/bin/dircolors ]]; then
+  if [[ -r ~/.dircolors ]]; then
+    eval "$(dircolors -b ~/.dircolors)"
+  else
+    eval "$(dircolors -b)"
+  fi
+
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
 # -----------------------------------------------------------------------------
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
