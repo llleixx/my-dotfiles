@@ -9,6 +9,7 @@ fi
 # 0. Zsh Native Behavior & History Configuration
 # =============================================================================
 HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/.zsh_history" # Location of history file
+mkdir -p -- "${HISTFILE:h}"
 HISTSIZE=50000                 # Number of history entries kept in memory
 SAVEHIST=50000                 # Number of history entries saved to file
 
@@ -55,9 +56,9 @@ zinit light Aloxaf/fzf-tab
 # =============================================================================
 # 5. User Experience & Keybindings
 # =============================================================================
-# Initialize fzf native keybindings (Asynchronous snippet to reduce startup time)
-zinit ice wait"0" lucid
-zinit snippet eval"fzf --zsh"
+# Initialize fzf native keybindings (Deferred to reduce startup time)
+zinit ice wait"0" lucid atinit'eval "$(fzf --zsh)"'
+zinit light zdharma-continuum/null
 
 # Vim mode (Synchronous loading recommended to prevent missed keystrokes on startup)
 zinit ice depth"1"
@@ -91,7 +92,7 @@ if [[ -x /usr/bin/dircolors ]]; then
   # Make Zsh completion menu and fzf-tab inherit dircolors
   zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
   # Configure fzf-tab directory preview command (using colored ls)
-  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always -1 -A $realpath'
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'command ls --color=always -1 -A $realpath'
 fi
 
 alias ll='ls -alF'
