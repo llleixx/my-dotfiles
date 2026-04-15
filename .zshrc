@@ -70,9 +70,8 @@ zinit light zsh-users/zsh-history-substring-search
 # =============================================================================
 # 6. Modern Directory Navigation: Zoxide
 # =============================================================================
-# Initialize zoxide (Asynchronous snippet to reduce startup time)
-zinit ice wait"0" lucid
-zinit snippet eval"zoxide init zsh"
+# Initialize zoxide so its shell functions (including `z`) are defined
+eval "$(zoxide init zsh)"
 
 # =============================================================================
 # 7. GNU color support, Completion Colors & Common Aliases
