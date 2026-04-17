@@ -6,6 +6,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # =============================================================================
+# 0. Zsh Native Behavior & History Configuration
+# =============================================================================
+HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/.zsh_history" # Location of history file
+HISTSIZE=50000                 # Number of history entries kept in memory
+SAVEHIST=50000                 # Number of history entries saved to file
+
+setopt EXTENDED_HISTORY        # Record timestamps and duration of commands
+setopt INC_APPEND_HISTORY      # Append commands to history immediately
+setopt SHARE_HISTORY           # Share history across multiple terminal sessions
+setopt HIST_IGNORE_DUPS        # Do not record consecutive duplicate commands
+
+# =============================================================================
 # 1. Zinit Core Initialization
 # =============================================================================
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
