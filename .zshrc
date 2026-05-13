@@ -68,9 +68,20 @@ source <(fzf --zsh)
 zinit ice depth"1"
 zinit light jeffreytse/zsh-vi-mode
 
-# History substring search (Bound to Up/Down arrow keys)
-zinit ice wait"0" lucid atload'bindkey "$terminfo[kcuu1]" history-substring-search-up; bindkey "$terminfo[kcud1]" history-substring-search-down'
+# History substring search
 zinit light zsh-users/zsh-history-substring-search
+
+function zvm_after_init() {
+  for keymap in emacs viins vicmd; do
+    bindkey -M "$keymap" "$terminfo[kcuu1]" history-substring-search-up
+    bindkey -M "$keymap" "$terminfo[kcud1]" history-substring-search-down
+
+    bindkey -M "$keymap" '^[[A' history-substring-search-up
+    bindkey -M "$keymap" '^[[B' history-substring-search-down
+    bindkey -M "$keymap" '^[OA' history-substring-search-up
+    bindkey -M "$keymap" '^[OB' history-substring-search-down
+  done
+}
 
 # =============================================================================
 # 6. Modern Directory Navigation: Zoxide
