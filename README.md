@@ -11,6 +11,7 @@ This repository leverages **Zinit** (with Turbo Mode) for sub-millisecond Zsh st
 * **🔍 Fuzzy Finding Everywhere:** Deep integration with `fzf` for command history (`Ctrl+R`), file searching (`Ctrl+T`), and interactive tab completion (`fzf-tab`).
 * **🚀 Smart Navigation:** Directory jumping using `zoxide`.
 * **⌨️ Vim Mode:** Full Vi keybindings in the terminal with visual mode indicators.
+* **🧩 tmux Workflow:** Prefix, pane navigation, copy mode, and status bar defaults tuned for daily terminal work.
 * **🛠️ Supercharged Git:** Custom aliases including a beautiful commit graph (`git lg`), quick undo (`git undo`), and streamlined rebase pulling.
 * **📦 Modular Deployment:** An installation script that allows you to install only what you need (e.g., just Git config, or just Zsh).
 
@@ -23,7 +24,7 @@ This repository leverages **Zinit** (with Turbo Mode) for sub-millisecond Zsh st
 
 ### One-Line Installation (Default)
 
-To install the complete environment (Zsh, Vim, and Git configurations), run the following command in your terminal:
+To install the complete environment (Zsh, Vim, Git, and tmux configurations), run the following command in your terminal:
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/llleixx/my-dotfiles/main/install.sh)"
@@ -40,6 +41,7 @@ If you only want to deploy specific parts of the configuration to a server, you 
 * `--zsh` : Installs Zsh, fzf, zoxide, and the `.zshrc` / `.p10k.zsh` configs.
 * `--vim` : Installs Vim and the `.vimrc` config.
 * `--git` : Installs Git and the `.gitconfig` config.
+* `--tmux` : Installs tmux and the `.tmux.conf` config.
 * `--all` : Installs everything (default behavior).
 
 **Example: Install only Git and Vim configurations:**

@@ -7,6 +7,7 @@ INSTALL_ALL=true
 INSTALL_ZSH=false
 INSTALL_VIM=false
 INSTALL_GIT=false
+INSTALL_TMUX=false
 
 # Parse command-line arguments
 if [[ "$#" -gt 0 ]]; then
@@ -17,6 +18,7 @@ if [[ "$#" -gt 0 ]]; then
             --zsh)    INSTALL_ZSH=true ;;
             --vim)    INSTALL_VIM=true ;;
             --git)    INSTALL_GIT=true ;;
+            --tmux)   INSTALL_TMUX=true ;;
             --help|-h)
                 echo "Usage: $0 [options]"
                 echo "Options:"
@@ -24,6 +26,7 @@ if [[ "$#" -gt 0 ]]; then
                 echo "  --zsh        Deploy only Zsh environment"
                 echo "  --vim        Deploy only Vim configuration"
                 echo "  --git        Deploy only Git configuration"
+                echo "  --tmux       Deploy only tmux configuration"
                 echo "  --help, -h   Display this help message"
                 exit 0
                 ;;
@@ -41,6 +44,7 @@ if [ "$INSTALL_ALL" = true ]; then
     INSTALL_ZSH=true
     INSTALL_VIM=true
     INSTALL_GIT=true
+    INSTALL_TMUX=true
 fi
 
 # =============================================================================
@@ -53,6 +57,7 @@ PACKAGES=("curl" "tar")
 [ "$INSTALL_ZSH" = true ] && PACKAGES+=("zsh" "zoxide")
 [ "$INSTALL_VIM" = true ] && PACKAGES+=("vim")
 [ "$INSTALL_GIT" = true ] && PACKAGES+=("git")
+[ "$INSTALL_TMUX" = true ] && PACKAGES+=("tmux")
 
 sudo apt update
 sudo apt install -y "${PACKAGES[@]}"
@@ -120,6 +125,11 @@ fi
 if [ "$INSTALL_GIT" = true ]; then
     echo "🚀 Deploying Git configuration..."
     curl -fsSL https://raw.githubusercontent.com/llleixx/my-dotfiles/main/.gitconfig -o ~/.gitconfig
+fi
+
+if [ "$INSTALL_TMUX" = true ]; then
+    echo "🚀 Deploying tmux configuration..."
+    curl -fsSL https://raw.githubusercontent.com/llleixx/my-dotfiles/main/.tmux.conf -o ~/.tmux.conf
 fi
 
 echo "✅ Deployment sequence complete."
